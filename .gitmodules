@@ -1,3 +1,6 @@
 [submodule "fixtures"]
 	path = fixtures
 	url = https://github.com/ethereum/tests.git
+[submodule "eth/vm/nufhe"]
+	path = eth/vm/nufhe
+	url = https://github.com/C4Coin/nufhe
