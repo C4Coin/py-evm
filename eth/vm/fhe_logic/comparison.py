@@ -1,6 +1,7 @@
 from eth import constants
 from eth.vm.nufhe import nufhe
 import numpy
+from reikna.cluda import any_api
 
 
 from eth.utils.numeric import (
@@ -141,8 +142,8 @@ def not_op(computation):
     num_bits = 256
     value_array = numpy.array([(value >> bit) & 1 for bit in range(num_bits -1, -1, 1)])
 
-    result = nufhe.empty_ciphertext(self.thr, self.program.key.params, left.shape)
-    nufhe.gate_not(self.thr, self.program.key, result, value_array, perf_params=self.pp)
+    result = nufhe.empty_ciphertext(computation.thr, computation.bootstrap_ke.params, value_array.shape)
+    nufhe.gate_not(computation.thr, computation.bootstrap_key, result, value_array, perf_params=computation.pp)
 
     computation.stack_push(result)
 
