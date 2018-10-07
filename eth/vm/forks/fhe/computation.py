@@ -29,6 +29,10 @@ FHE_PRECOMPILES = {
     force_bytes_to_address(b'\x04'): precompiles.identity,
 }
 
+from reikna.cluda import any_api
+import numpy
+import nufhe
+
 
 class FheComputation(BaseComputation):
     """
@@ -38,6 +42,25 @@ class FheComputation(BaseComputation):
     # Override
     opcodes = FHE_OPCODES
     _precompiles = FHE_PRECOMPILES
+
+
+    def __init__(self,
+                 state,
+                 message,
+                 transaction_context) -> None:
+
+        super(BaseComputation, self).__init__(state, message, transaction_context)
+        self.thr = any_api().Thread.create(interactive=True)
+        self.rng = numpy.random.RandomState() # hack a rng for now
+        self.pp = nufhe.performance_parameters(single_kernel_bootstrap=False, transforms_per_block=1)
+
+        secret_key, bootstrap_key = nufhe.make_key_pair(self.thr, self.rng, transform_type='NTT') # prob. goes somewhere else
+        self.secret_key = secret_key
+        self.bootstrap_key = bootstrap_key
+
+        self.key = None
+
+        self.size = 32
 
     def apply_message(self):
         snapshot = self.state.snapshot()
