@@ -1,4 +1,7 @@
 from eth import constants
+from eth.vm.nufhe import nufhe
+import numpy
+
 
 from eth.utils.numeric import (
     signed_to_unsigned,
@@ -135,7 +138,11 @@ def not_op(computation):
     """
     value = computation.stack_pop(type_hint=constants.UINT256)
 
-    result = constants.UINT_256_MAX - value
+    num_bits = 256
+    value_array = numpy.array([(value >> bit) & 1 for bit in range(num_bits -1, -1, 1)])
+
+    result = nufhe.empty_ciphertext(self.thr, self.program.key.params, left.shape)
+    nufhe.gate_not(self.thr, self.program.key, result, value_array, perf_params=self.pp)
 
     computation.stack_push(result)
 
