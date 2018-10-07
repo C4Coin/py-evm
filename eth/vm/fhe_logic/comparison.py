@@ -139,8 +139,7 @@ def not_op(computation):
     """
     value = computation.stack_pop(type_hint=constants.UINT256)
 
-    num_bits = 256
-    value_array = numpy.array([(value >> bit) & 1 for bit in range(num_bits -1, -1, 1)])
+    value_array = numpy.array([(value >> i) & 1 for i in range(8)][::-1])
 
     result = nufhe.empty_ciphertext(computation.thr, computation.bootstrap_ke.params, value_array.shape)
     nufhe.gate_not(computation.thr, computation.bootstrap_key, result, value_array, perf_params=computation.pp)
