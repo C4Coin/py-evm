@@ -1,4 +1,9 @@
-# Python Implementation of the EVM
+# Python Implementation of the EVM (adding support for FHE using NuFHE)
+
+For an example of how to implement a logic gate, ie NOT, see:
+https://github.com/C4Coin/py-fhe-evm/blob/c38b98d7033db8ed37f8466a51de38144ab1a4eb/eth/vm/fhe_logic/comparison.py#L136
+
+
 
 [![Join the chat at https://gitter.im/ethereum/py-evm](https://badges.gitter.im/ethereum/py-evm.svg)](https://gitter.im/ethereum/py-evm)
 [![Documentation Status](https://readthedocs.org/projects/py-evm/badge/?version=latest)](http://py-evm.readthedocs.io/en/latest/?badge=latest)
